@@ -22,6 +22,6 @@ const urlSchema = new Schema({
     },
 },{timestamp: true});
 
-const URL = Mongoose.Model("URL", urlSchema);
+const URL = Mongoose.model("URL", urlSchema);
 
 export default URL;
