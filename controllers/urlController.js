@@ -1,14 +1,18 @@
+import validUrl from "valid-url";
+
 const shortUrl = async (req, res) => {
-    const longURL = req.body;
+    const { longUrl } = req.body;
+    console.log("Received long url from user: ", longUrl);
     
-    if(!longURL) {
+    if(!longUrl) {
         return res.status(400).json({success: false, message: 'Please provide a URL.'});
     }
-    else {
-        console.log("Received long url from user: ", longURL);
+
+    if(!validUrl.isUri(longUrl)) {
+        return res.status(400).json({success: false, error: 'Invalid URL formate provided.'});
     }
 
-    res.status(200).json({success: true, message: "Controller is now connected.", data: { receivedUrl: longURL }});
+    res.status(200).json({success: true, message: "Controller is now connected.", data: { receivedUrl: longUrl }});
 }
 
 export default shortUrl;
