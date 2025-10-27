@@ -2,9 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
+import connectDB from "./config/db.js";
 
 const app = express();
 const PORT = process.env.PORT;
+
+//* Establishing DataBase Connection
+connectDB();
 
 //* Testing Route
 app.get('/test', (req, res) => {
