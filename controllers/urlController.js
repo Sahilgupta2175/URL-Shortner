@@ -29,7 +29,13 @@ const shortUrl = async (req, res) => {
 
         const longUrl = `${process.env.BASE_URL}/${generatedShortURL}`;
 
-        res.status(200).json({success: true, message: 'URL is new. Code generate successfully.', data: {originalUrl: originalUrl, generatedShortURL: generatedShortURL, longUrl: longUrl}});
+        url = await URL.create({
+            shortUrl: generatedShortURL,
+            originalUrl: originalUrl,
+            longUrl: longUrl,
+        });
+
+        res.status(201).json({success: true, data: url});
     } catch (error) {
         console.log('Database error.', error.message);
         return res.status(500).json({success: false, error: 'Internal Server error.'});
