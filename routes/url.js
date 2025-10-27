@@ -1,9 +1,8 @@
 import express from "express";
+import shortUrl from "../controllers/urlController.js";
 
 const router = express.Router();
 
-router.post('/shorten', (req, res) => {
-    res.status(200).json({success: true, message: 'Route is working!.'})
-});
+router.post('/shorten', shortUrl);
 
 export default router;
