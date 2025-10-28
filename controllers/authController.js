@@ -1,5 +1,6 @@
 import USER from "../models/user.js";
 import bcrypt, { genSalt } from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
     try {
@@ -51,8 +52,16 @@ export const loginUser = async (req, res) => {
         if(!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({success: false, error: 'Invalid email or password.'});
         }
+
+        const payload = {
+            user: {
+                id: user._id,
+            },
+        };
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
         
-        res.status(200).json({success: true, message: 'User logged in Successfully.'});
+        res.status(200).json({success: true, token: token});
     } catch (error) {
         console.error("Login error.", error.message);
         res.status(500).json({success: false, message: 'Internal Server error.'});
