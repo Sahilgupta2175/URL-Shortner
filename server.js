@@ -4,7 +4,8 @@ dotenv.config();
 import express, { urlencoded } from "express";
 import connectDB from "./config/db.js";
 import urlRoutes from "./routes/url.js";
-import indexRoutes from "./routes/index.js";
+import redirectUrl from "./routes/redirectUrl.js";
+import authRoute from "./routes/auth.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -18,7 +19,8 @@ app.use(express.urlencoded({extended: true}));
 
 //* Route
 app.use('/api', urlRoutes);
-app.use('/', indexRoutes);
+app.use('/api/auth', authRoute);
+app.use('/', redirectUrl);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
