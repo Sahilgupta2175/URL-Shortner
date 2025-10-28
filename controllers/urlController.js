@@ -2,7 +2,7 @@ import validUrl from "valid-url";
 import URL from "../models/url.js";
 import { nanoid } from "nanoid";
 
-const shortUrl = async (req, res) => {
+export const shortenUrl = async (req, res) => {
     const { longUrl } = req.body;
     const originalUrl = longUrl;
     console.log("Received long url from user: ", originalUrl);
@@ -45,4 +45,24 @@ const shortUrl = async (req, res) => {
     }
 }
 
-export default shortUrl;
+export const redirectToUrl = async (req, res) => {
+    const { shortUrl } = req.params;
+    console.log('ShortURl from Url: ', shortUrl);
+
+    try {
+        const url = await URL.findOne({shortUrl: shortUrl});
+
+        if(url) {
+            url.clicks++;
+            await url.save();
+            return res.status(200).json({success: true, message: 'URL found successfully. Click count increment in memory.', data: url});
+        }
+        else {
+            return res.status(404).json({success: false, error: 'No URL found.'});
+        }
+    }
+    catch (error) {
+        console.error('Server error on redirect.', error.message);
+        res.status(500).json({success: false, error: 'Internal Server error'});
+    }
+}
