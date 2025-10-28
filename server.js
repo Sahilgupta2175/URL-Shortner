@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express, { urlencoded } from "express";
+import express from "express";
 import connectDB from "./config/db.js";
 import urlRoutes from "./routes/url.js";
 import redirectUrl from "./routes/redirectUrl.js";

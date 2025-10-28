@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 export const shortenUrl = async (req, res) => {
     const { longUrl } = req.body;
     const originalUrl = longUrl;
-    console.log("Received long url from user: ", originalUrl);
+    console.log("Received Original URL from user: ", originalUrl);
     
     //* checking longUrl exist or not
     if(!originalUrl) {
@@ -31,12 +31,19 @@ export const shortenUrl = async (req, res) => {
         //* adding short url with base url. eg. http://localhost:8080/alohslieow
         const longUrl = `${process.env.BASE_URL}/${generatedShortURL}`;
 
-        //* creating and saving new url document in database.
-        url = await URL.create({
+        //* creating object to hold new URL document
+        const newURLData = {
             shortUrl: generatedShortURL,
             originalUrl: originalUrl,
             longUrl: longUrl,
-        });
+        }
+
+        if(req.user) {
+            newURLData.user = req.user.id;
+        }
+
+        //* saving new url document in database.
+        url = await URL.create(newURLData);
 
         res.status(201).json({success: true, data: url});
     } catch (error) {
