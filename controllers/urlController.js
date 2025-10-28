@@ -46,16 +46,18 @@ export const shortenUrl = async (req, res) => {
 }
 
 export const redirectToUrl = async (req, res) => {
+    //* extract short url from url. eg. haonoaid
     const { shortUrl } = req.params;
     console.log('ShortURl from Url: ', shortUrl);
 
     try {
+        //* finding shortUrl is exist or not in db
         const url = await URL.findOne({shortUrl: shortUrl});
 
         if(url) {
             url.clicks++;
             await url.save();
-            return res.status(200).json({success: true, message: 'URL found successfully. Click count increment in memory.', data: url});
+            return res.redirect(301, url.originalUrl);
         }
         else {
             return res.status(404).json({success: false, error: 'No URL found.'});
