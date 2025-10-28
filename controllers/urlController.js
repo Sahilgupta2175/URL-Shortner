@@ -25,10 +25,13 @@ const shortUrl = async (req, res) => {
             return res.json({success: true, data: url});
         }
         
+        //* generating short url 
         const generatedShortURL = nanoid(10);
 
+        //* adding short url with base url. eg. http://localhost:8080/alohslieow
         const longUrl = `${process.env.BASE_URL}/${generatedShortURL}`;
 
+        //* creating and saving new url document in database.
         url = await URL.create({
             shortUrl: generatedShortURL,
             originalUrl: originalUrl,
