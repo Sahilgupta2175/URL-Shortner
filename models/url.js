@@ -25,7 +25,7 @@ const urlSchema = new Schema({
         ref: 'USER',
         required: false,
     },
-},{timestamp: true});
+},{timestamps: true});
 
 const URL = mongoose.model("URL", urlSchema);
 
