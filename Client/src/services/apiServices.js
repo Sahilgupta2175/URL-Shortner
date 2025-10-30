@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const createShortURL = async (longURL) => {
+const createShortURL = async (longUrl) => {
     try {
-        const response = await axios.post('/api/shorten', {longURL});
+        const response = await axios.post('/api/shorten', { longUrl });
         return response.data;
     } catch (error) {
         console.error('API error: Failed to create short URL.', error.message);
