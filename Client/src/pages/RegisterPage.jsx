@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function RegisterPage() {
     return (
@@ -41,7 +42,7 @@ function RegisterPage() {
             </form>
 
             <p className='auth-switch'>
-                Already have an account?
+                Already have an account? <Link to='/login'>Login here</Link>
             </p>
         </div>
     );
