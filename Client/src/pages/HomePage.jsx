@@ -3,12 +3,15 @@ import createShortURL from '../services/apiServices';
 
 function HomePage() {
     const [longURL, setLongURL] = useState('');
+    const [shortUrlData, setShortUrlData] = useState(null);
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         if(!longURL) {
-            alert('Please enter a URL to shorten.');
+            setError('Please enter a URL to shorten.');
+            setShortUrlData(null);
             return;
         }
         else {
@@ -16,11 +19,16 @@ function HomePage() {
         }
 
         try {
+            setError('');
             const response = await createShortURL(longURL);
+            setShortUrlData(response.data);
             console.log('Successfully created short URL: ', response);
         } catch (error) {
+            const errorMessage = error.error || 'An unexpected error occurred.';
+            setError(errorMessage);
+            console.log(errorMessage);
+            setShortUrlData(null);
             console.error('Error from API.', error.message);
-            alert(`Error: ${error.error || 'Something went wrong!'}`);
         }
     }
 
@@ -43,6 +51,34 @@ function HomePage() {
                 </div>
                 <button type='Submit'>Shorten URL</button>
             </form>
+            {
+                error && (
+                    <div className='error-container' style={{color: 'red', marginTop: '1rem'}}>
+                        <p><strong>Error: </strong> {error}</p>
+                    </div>
+                )
+            }
+            {
+                shortUrlData && (
+                    <div className='result-container' style={{marginTop: '1rem', border: '1px solid #ccc', padding: '1rem', borderRadius: '5px'}}>
+                        <h3>Your Short URL is ready!</h3>
+                        <p>
+                            <strong>Short Link: </strong>
+                            <a 
+                                href={shortUrlData.shortUrl}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                style={{marginLeft: '0.5rem', fontWeight: 'bold', color: '#007bff'}}
+                            >
+                                {shortUrlData.shortUrl}
+                            </a>
+                        </p>
+                        <p style={{fontsize: '0.8rem', color: '#555'}}>
+                            <strong>Original URL: </strong>{shortUrlData.originalUrl.substring(0,70)}...
+                        </p>
+                    </div>
+                )
+            }
         </div>
     );
 }
