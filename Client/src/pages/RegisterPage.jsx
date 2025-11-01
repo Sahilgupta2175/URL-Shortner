@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { registerUser } from '../services/authServices.js';
 
 function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -8,6 +9,9 @@ function RegisterPage() {
         password: ''
     });
 
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -15,9 +19,30 @@ function RegisterPage() {
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Registering with: ', formData);
+        setError('');
+        setSuccess('');
+
+        if(!formData.name || !formData.email || !formData.password) {
+            setError('All fields are required.');
+            return;
+        }
+
+        try {
+            const response = await registerUser(formData);
+            console.log('Registration successful. ', response);
+            setSuccess('Registration successful! Please log in.');
+            setFormData({
+                name: '',
+                email: '',
+                password: ''
+            });
+        } catch (error) {
+            const errorMessage = error.error || 'Registration failed. Please try again.';
+            setError(errorMessage);
+            console.error('Registration error: ', error.message);
+        }
     }
 
     return (
@@ -67,6 +92,20 @@ function RegisterPage() {
 
                 <button type='submit' className='btn'>Register</button>
             </form>
+
+            {
+                error && 
+                <p className='error-message' style={{color: 'red'}}>
+                    {error}
+                </p>
+            }
+
+            {
+                success && 
+                <p className='success-message' style={{color: 'green'}}>
+                    {success}
+                </p>
+            }
 
             <p className='auth-switch'>
                 Already have an account? <Link to='/login'>Login here</Link>

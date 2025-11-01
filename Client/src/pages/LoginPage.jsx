@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { loginUser } from '../services/authServices.js';
 
 function LoginPage() {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         setFormData({
@@ -14,9 +16,24 @@ function LoginPage() {
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Logging in with: ', formData);
+        setError('');
+
+        if(!formData.email || !formData.password) {
+            setError('Both email and password are required.');
+            return;
+        }
+
+        try {
+            const response = await loginUser(formData);
+            console.log('Login successfully, token received: ', response.token);
+            alert('Login Successful! Check the console for your token.');
+        } catch (error) {
+            const errorMessage = error.error || 'Login failed. Please check your credentials.';
+            setError(errorMessage);
+            console.error('Login error: ', error.message);
+        }
     }
 
     return (
@@ -53,6 +70,13 @@ function LoginPage() {
 
                 <button type='submit' className='btn'>Login</button>
             </form>
+
+            {
+                error && 
+                <p className='error-message' style={{color: 'red'}}>
+                    {error}
+                </p>
+            }
 
             <p className='auth-switch'>
                 Don't have an account? <Link to='/register'>Register here</Link>
