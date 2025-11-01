@@ -1,8 +1,8 @@
-import React, {useState, useEffect, createContext, useContext, Children} from 'react';
+import React, {useState, useEffect, createContext, useContext} from 'react';
 
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({ Children }) => {
+export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
     const [isAuthenticated, setIsAuthenticated] = useState(!!authToken);
     const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +39,7 @@ export const AuthProvider = ({ Children }) => {
 
     return (
         <AuthContext.Provider value={contextValue}>
-            {!isLoading && Children}
+            {!isLoading && children}
         </AuthContext.Provider>
     );
 };
