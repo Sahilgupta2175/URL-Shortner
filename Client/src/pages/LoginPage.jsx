@@ -1,19 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function LoginPage() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Logging in with: ', formData);
+    }
+
     return (
         <div className='auth-container'>
             <h2>Welcome Back!</h2>
             <p>Log in to access your dashboard.</p>
 
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='email'>Email: </label>
                     <input 
                         id='email'
                         type='email'
-                        placeholder='johndoe@gmail.com'
+                        placeholder='johndoe@gmail.com' 
+                        name='email'
+                        value={formData.email}
+                        onChange={handleChange}
                         required
                     />
                 </div>
@@ -24,6 +44,9 @@ function LoginPage() {
                         id='password'
                         type='password'
                         placeholder='john@2084#doe/'
+                        name='password'
+                        value={formData.password}
+                        onChange={handleChange}
                         required
                     />
                 </div>
