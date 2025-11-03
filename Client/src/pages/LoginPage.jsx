@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authServices.js';
+import { UseAuth } from '../context/AuthContext.jsx';
 
 function LoginPage() {
     const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ function LoginPage() {
         password: ''
     });
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const { login } = UseAuth();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -20,9 +23,11 @@ function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setIsLoading(true);
 
         if(!formData.email || !formData.password) {
             setError('Both email and password are required.');
+            setIsLoading(false);
             return;
         }
 
@@ -30,8 +35,8 @@ function LoginPage() {
             const response = await loginUser(formData);
             
             if(response.token) {
-                localStorage.setItem('authToken', response.token);
-                console.log('Token stored in localStorage successfully!.');
+                login(response.token);
+                console.log('Token stored successfully!');
                 navigate('/dashboard');
             }
             else {
@@ -40,16 +45,19 @@ function LoginPage() {
         } catch (error) {
             const errorMessage = error.error || 'Login failed. Please check your credentials.';
             setError(errorMessage);
-            console.error('Login error: ', error.message);
+            console.error('Login error: ', error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     return (
-        <div className='auth-container'>
-            <h2>Welcome Back!</h2>
-            <p>Log in to access your dashboard.</p>
+        <div className='page-container'>
+            <div className='auth-container card'>
+                <h2>🔐 Welcome Back!</h2>
+                <p>Log in to access your dashboard and manage your URLs.</p>
 
-            <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='email'>Email: </label>
                     <input 
@@ -76,19 +84,24 @@ function LoginPage() {
                     />
                 </div>
 
-                <button type='submit' className='btn'>Login</button>
+                <button type='submit' className='btn btn-primary' disabled={isLoading}>
+                    {isLoading ? '🔄 Logging in...' : '🚀 Login'}
+                </button>
             </form>
 
             {
                 error && 
-                <p className='error-message' style={{color: 'red'}}>
-                    {error}
-                </p>
+                <div className='error-message'>
+                    <p>{error}</p>
+                </div>
             }
 
-            <p className='auth-switch'>
-                Don't have an account? <Link to='/register'>Register here</Link>
-            </p>
+                <div className='auth-footer'>
+                    <p>
+                        Don't have an account? <Link to='/register'>Register here</Link>
+                    </p>
+                </div>
+            </div>
         </div>
     );
 }
