@@ -1,8 +1,15 @@
 import jwt from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => { 
-    const token = req.cookies.authToken || req.header('authToken');
-    console.log("Token:", token);
+    const authHeader = req.cookies.authToken || req.header('Authorization');
+    console.log("Auth header:", authHeader);
+
+    if(!authHeader) {
+        return res.status(401).json({success: false, error: 'Authorization denied.'});
+    }
+
+    const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : authHeader;
+    console.log('Token: ', token);
 
     if(!token) {
         return res.status(401).json({success: false, error: 'Authorization denied.'});

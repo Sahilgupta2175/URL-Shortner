@@ -24,7 +24,7 @@ function DashboardPage() {
             } finally {
                 setIsLoading(false);
             }
-        }
+        };
 
         fetchLinks();
     }, [authToken]);
@@ -39,8 +39,49 @@ function DashboardPage() {
             <h2>My Dashboard</h2>
             <p>Welcome to your personal dashboard! Here you will be able to see all the links you have created.</p>
 
-            <div className='links-list-placeholder'>
-                <p>Your links will appear here soon...</p>
+            <div className='links-list-container' style={{marginTop: '2rem'}}>
+                { 
+                    isLoading ? (
+                        <p>Loading your Links...</p>
+                    ) : error ? (
+                        <p className='error-message' style={{color: 'red'}}>
+                            Error: {error}
+                        </p>
+                    ) : links.length > 0 ? (
+                        <table className='links-table' style={{width: '100%', borderCollapse: 'collapse'}}>
+                            <thead>
+                                <tr style={{borderBottom: '2px solid #333'}}>
+                                    <th style={{padding: '8px', textAlign: 'left'}}>Original Url</th>
+                                    <th style={{padding: '8px', textAlign: 'left'}}>Short Url</th>
+                                    <th style={{padding: '8px', textAlign: 'left'}}>Clicks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    links.map((link) => (
+                                        <tr key={link._id} style={{borderBottom: '1px solid #ddd'}}>
+                                            <td style={{padding: '8px', wordBreak: 'break-all'}}>
+                                                <a href={link.longUrl} title={link.longUrl} target='_blank' rel='noopener noreferrer'>
+                                                    {link.longUrl.substring(0, 50)}...
+                                                </a>
+                                            </td>
+                                            <td style={{padding: '8px'}}>
+                                                <a href={link.shortUrl} target='_blank' rel='noopener noreferrer'>
+                                                    {link.shortUrl}
+                                                </a>
+                                            </td>
+                                            <td style={{padding: '8px', textAlign: 'center'}}>
+                                                {link.clicks}
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p>You haven't created any short links yet. Go to the homepage to create your first one!</p>
+                    )
+                }
             </div>
 
             <button 

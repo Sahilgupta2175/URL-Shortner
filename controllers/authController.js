@@ -60,6 +60,11 @@ export const loginUser = async (req, res) => {
         };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
+
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            maxAge: '3600000', //* 1 Hr
+        });
         
         res.status(200).json({success: true, token: token});
     } catch (error) {
