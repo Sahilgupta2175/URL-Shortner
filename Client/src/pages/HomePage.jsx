@@ -3,7 +3,7 @@ import createShortURL from '../services/apiServices';
 
 function HomePage() {
     const [longURL, setLongURL] = useState('');
-    const [shortUrlData, setShortUrlData] = useState(null);
+    const [shortUrl, setShortUrl] = useState(null);
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
@@ -11,7 +11,7 @@ function HomePage() {
         
         if(!longURL) {
             setError('Please enter a URL to shorten.');
-            setShortUrlData(null);
+            setShortUrl(null);
             return;
         }
         else {
@@ -21,14 +21,26 @@ function HomePage() {
         try {
             setError('');
             const response = await createShortURL(longURL);
-            setShortUrlData(response.data);
+            setShortUrl(response.data.shortUrl);
             console.log('Successfully created short URL: ', response);
         } catch (error) {
             const errorMessage = error.error || 'An unexpected error occurred.';
             setError(errorMessage);
             console.log(errorMessage);
-            setShortUrlData(null);
+            setShortUrl(null);
             console.error('Error from API.', error.message);
+        }
+    }
+
+    const handleCopy = async () => {
+        if(!shortUrl) return;
+
+        try {
+            await navigator.clipboard.writeText(shortUrl);
+            alert('URL copied to clipboard!');
+        } catch (error) {
+            console.error('Failed to copy URL.', error.message);
+            alert('Failed to copy URL.');
         }
     }
 
@@ -52,14 +64,14 @@ function HomePage() {
                 <button type='Submit'>Shorten URL</button>
             </form>
             {
-                shortUrlData && (
+                shortUrl && (
                     <div className='result-container' style={{marginTop: '20px'}}>
                         <p>Your Shortened URL: </p>
                         <div className='short-url-display' style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <a href={shortUrlData.shortUrl} target='_blank' rel='noopener noreferrer'>
-                                {shortUrlData.shortUrl}
+                            <a href={shortUrl} target='_blank' rel='noopener noreferrer'>
+                                {shortUrl}
                             </a>
-                            <button className='btn btn-copy' type='button'>
+                            <button className='btn btn-copy' type='button' onClick={handleCopy}>
                                 Copy
                             </button>
                         </div>

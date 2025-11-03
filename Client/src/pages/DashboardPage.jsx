@@ -34,6 +34,16 @@ function DashboardPage() {
         navigate('/login');
     }
 
+    const handleCopy = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            alert('URL copied to clipboard.');
+        } catch (error) {
+            console.error('Failed to copy URL. ', error.message);
+            alert('Failed to copy URL.');
+        }
+    }
+
     return (
         <div className='dashboard-container'>
             <h2>My Dashboard</h2>
@@ -75,7 +85,7 @@ function DashboardPage() {
                                                 {link.clicks}
                                             </td>
                                             <td style={{padding: '8px'}}>
-                                                <button className='btn btn-copy btn-small'>
+                                                <button className='btn btn-copy btn-small' onClick={() => handleCopy(link.shortUrl)}>
                                                     Copy
                                                 </button>
                                             </td>
