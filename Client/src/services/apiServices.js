@@ -1,5 +1,8 @@
 import axios from "axios";
 
+// Configure axios to include credentials with every request
+axios.defaults.withCredentials = true;
+
 const createShortURL = async (longUrl) => {
     try {
         const response = await axios.post('/api/shorten', { longUrl });
