@@ -33,10 +33,13 @@ function DashboardPage() {
         fetchLinks();
     }, [authToken]);
 
-    const handleCopy = async (text) => {
+    const [copiedId, setCopiedId] = useState(null);
+
+    const handleCopy = async (text, linkId) => {
         try {
             await navigator.clipboard.writeText(text);
-            alert('URL copied to clipboard.');
+            setCopiedId(linkId);
+            setTimeout(() => setCopiedId(null), 2000);
         } catch (error) {
             console.error('Failed to copy URL. ', error.message);
             alert('Failed to copy URL.');
@@ -242,7 +245,10 @@ function DashboardPage() {
             <div className='links-list-container' style={{marginTop: '2rem'}}>
                 { 
                     isLoading ? (
-                        <p>Loading your Links...</p>
+                        <div className='loading'>
+                            <div className='spinner'></div>
+                            <p style={{marginTop: '1rem', color: '#64748b'}}>Loading your links...</p>
+                        </div>
                     ) : error ? (
                         <p className='error-message' style={{color: 'red'}}>
                             Error: {error}
@@ -276,8 +282,15 @@ function DashboardPage() {
                                             </td>
                                             <td style={{padding: '8px'}}>
                                                 <div style={{display: 'flex', gap: '5px', flexWrap: 'wrap'}}>
-                                                    <button className='btn btn-copy btn-small' onClick={() => handleCopy(link.shortUrl)}>
-                                                        📋
+                                                    <button 
+                                                        className='btn btn-copy btn-small' 
+                                                        onClick={() => handleCopy(link.shortUrl, link._id)}
+                                                        style={{
+                                                            background: copiedId === link._id ? '#10b981' : '',
+                                                            transition: 'all 0.3s ease'
+                                                        }}
+                                                    >
+                                                        {copiedId === link._id ? '✓' : '📋'}
                                                     </button>
                                                     <button className='btn btn-primary btn-small' onClick={() => handleGenerateQR(link)} style={{background: '#8b5cf6'}}>
                                                         📱

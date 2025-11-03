@@ -77,7 +77,17 @@ function HomePage() {
                                 onChange={(e) => setLongURL(e.target.value)}
                                 required
                                 disabled={isLoading}
+                                autoFocus
                             />
+                            {longURL && longURL.length > 50 && (
+                                <p style={{
+                                    marginTop: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    color: '#f59e0b'
+                                }}>
+                                    📏 Your URL is {longURL.length} characters long
+                                </p>
+                            )}
                         </div>
                         <button type='submit' disabled={isLoading}>
                             {isLoading ? '🔄 Shortening...' : '✨ Shorten URL'}
