@@ -1,5 +1,7 @@
 // Import axios for making HTTP requests
 import axios from "axios";
+// Import API base URL configuration
+import API_BASE_URL from "../config/api.js";
 
 // Configure axios to include credentials (cookies) with every request
 // This ensures the authToken cookie is sent with API calls
@@ -31,7 +33,7 @@ const createShortURL = async (longUrl) => {
     try {
         // Send POST request to shorten endpoint
         // Cookies (auth token) are automatically included due to withCredentials setting
-        const response = await axios.post('/api/shorten', { longUrl });
+        const response = await axios.post(`${API_BASE_URL}/api/shorten`, { longUrl });
         return response.data;
     } catch (error) {
         console.error('API error: Failed to create short URL.', error.message);

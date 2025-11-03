@@ -1,8 +1,10 @@
 // Import axios for making HTTP requests
 import axios from "axios";
+// Import API base URL configuration
+import API_BASE_URL from "../config/api.js";
 
 // Base URL for link management endpoints
-const API_URL = '/api/links';
+const API_URL = `${API_BASE_URL}/api/links`;
 
 /**
  * getUserLinks - Fetches all URLs created by the authenticated user

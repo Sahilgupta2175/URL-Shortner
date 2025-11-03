@@ -1,8 +1,10 @@
 // Import axios for making HTTP requests
 import axios from "axios";
+// Import API base URL configuration
+import API_BASE_URL from "../config/api.js";
 
 // Base URL for authentication endpoints
-const API_URL = '/api/auth/';
+const API_URL = `${API_BASE_URL}/api/auth/`;
 
 /**
  * registerUser - Registers a new user account
