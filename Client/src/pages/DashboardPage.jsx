@@ -54,6 +54,7 @@ function DashboardPage() {
                                     <th style={{padding: '8px', textAlign: 'left'}}>Original Url</th>
                                     <th style={{padding: '8px', textAlign: 'left'}}>Short Url</th>
                                     <th style={{padding: '8px', textAlign: 'left'}}>Clicks</th>
+                                    <th style={{padding: '8px', textAlign: 'left'}}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,6 +73,11 @@ function DashboardPage() {
                                             </td>
                                             <td style={{padding: '8px', textAlign: 'center'}}>
                                                 {link.clicks}
+                                            </td>
+                                            <td style={{padding: '8px'}}>
+                                                <button className='btn btn-copy btn-small'>
+                                                    Copy
+                                                </button>
                                             </td>
                                         </tr>
                                     ))
