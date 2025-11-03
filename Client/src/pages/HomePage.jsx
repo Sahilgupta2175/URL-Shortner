@@ -122,7 +122,7 @@ function HomePage() {
                                 Create Another
                             </button>
                             {authToken && (
-                                <p style={{marginTop: '1rem', color: '#ffffff'}}>
+                                <p style={{marginTop: '1rem', color: '#2563eb'}}>
                                     View all your links in{' '}
                                     <a href='/dashboard' onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }} title='Go to Dashboard'>
                                         Dashboard
