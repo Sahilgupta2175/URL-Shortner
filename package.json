@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
     "nanoid": "^5.1.6",
+    "qrcode": "^1.5.4",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {

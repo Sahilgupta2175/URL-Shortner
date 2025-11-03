@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authServices.js';
-import { UseAuth } from '../context/AuthContext.jsx';
+import { UseAuth } from '../context/AuthContext';
 
 function LoginPage() {
     const [formData, setFormData] = useState({

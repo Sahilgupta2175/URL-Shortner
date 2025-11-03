@@ -9,7 +9,9 @@ function DashboardPage() {
     const [error, setError] = useState('');
     const [editingLink, setEditingLink] = useState(null);
     const [editedUrl, setEditedUrl] = useState('');
-    const { authToken, logout } = UseAuth();
+    const [qrCodeLink, setQrCodeLink] = useState(null);
+    const [qrCodeData, setQrCodeData] = useState(null);
+    const { authToken } = UseAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,11 +32,6 @@ function DashboardPage() {
 
         fetchLinks();
     }, [authToken]);
-
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-    }
 
     const handleCopy = async (text) => {
         try {
@@ -88,10 +85,113 @@ function DashboardPage() {
         setEditedUrl('');
     }
 
+    const handleGenerateQR = async (link) => {
+        try {
+            const shortCode = link.shortUrl.split('/').pop();
+            const response = await fetch(`/api/qrcode/${shortCode}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                setQrCodeLink(link);
+                setQrCodeData(data.qrCode);
+            }
+        } catch (error) {
+            console.error('Failed to generate QR code:', error);
+            alert('Failed to generate QR code. Please try again.');
+        }
+    }
+
+    const handleDownloadQR = () => {
+        if (!qrCodeData) return;
+        
+        const link = document.createElement('a');
+        link.href = qrCodeData;
+        link.download = `qr-code-${qrCodeLink.shortUrl.split('/').pop()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    const handleCloseQR = () => {
+        setQrCodeLink(null);
+        setQrCodeData(null);
+    }
+
+    const totalClicks = links.reduce((sum, link) => sum + link.clicks, 0);
+    const totalLinks = links.length;
+    const avgClicks = totalLinks > 0 ? (totalClicks / totalLinks).toFixed(1) : 0;
+
     return (
         <div className='dashboard-container'>
-            <h2>My Dashboard</h2>
-            <p>Welcome to your personal dashboard! Here you will be able to see all the links you have created.</p>
+            <h2>📊 My Dashboard</h2>
+            <p>Welcome to your personal dashboard! Manage and track all your shortened URLs.</p>
+
+            <div className='stats-container'>
+                <div className='stat-card'>
+                    <h3>{totalLinks}</h3>
+                    <p>Total Links</p>
+                </div>
+                <div className='stat-card'>
+                    <h3>{totalClicks}</h3>
+                    <p>Total Clicks</p>
+                </div>
+                <div className='stat-card'>
+                    <h3>{avgClicks}</h3>
+                    <p>Avg Clicks/Link</p>
+                </div>
+            </div>
+
+            {qrCodeLink && (
+                <div className='edit-modal' style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000
+                }}>
+                    <div className='edit-modal-content' style={{
+                        backgroundColor: 'white',
+                        padding: '2rem',
+                        borderRadius: '8px',
+                        maxWidth: '400px',
+                        width: '90%',
+                        textAlign: 'center'
+                    }}>
+                        <h3>QR Code</h3>
+                        <p style={{color: '#64748b', marginBottom: '1rem'}}>
+                            Scan this QR code to access your short URL
+                        </p>
+                        {qrCodeData && (
+                            <img 
+                                src={qrCodeData} 
+                                alt='QR Code' 
+                                style={{
+                                    width: '100%',
+                                    maxWidth: '300px',
+                                    margin: '1rem auto',
+                                    display: 'block',
+                                    border: '2px solid #e2e8f0',
+                                    borderRadius: '8px',
+                                    padding: '1rem'
+                                }}
+                            />
+                        )}
+                        <div style={{marginTop: '1rem', display: 'flex', gap: '10px', justifyContent: 'center'}}>
+                            <button onClick={handleDownloadQR} className='btn btn-primary'>
+                                📥 Download
+                            </button>
+                            <button onClick={handleCloseQR} className='btn btn-secondary'>
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {editingLink && (
                 <div className='edit-modal' style={{
@@ -175,15 +275,20 @@ function DashboardPage() {
                                                 {link.clicks}
                                             </td>
                                             <td style={{padding: '8px'}}>
-                                                <button className='btn btn-copy btn-small' onClick={() => handleCopy(link.shortUrl)}>
-                                                    Copy
-                                                </button>
-                                                <button className='btn btn-edit btn-small' onClick={() => handleEdit(link)} style={{marginLeft: '5px'}}>
-                                                    Edit
-                                                </button>
-                                                <button className='btn btn-delete btn-small' onClick={() => handleDelete(link._id)} style={{marginLeft: '5px'}}>
-                                                    Delete
-                                                </button>
+                                                <div style={{display: 'flex', gap: '5px', flexWrap: 'wrap'}}>
+                                                    <button className='btn btn-copy btn-small' onClick={() => handleCopy(link.shortUrl)}>
+                                                        📋
+                                                    </button>
+                                                    <button className='btn btn-primary btn-small' onClick={() => handleGenerateQR(link)} style={{background: '#8b5cf6'}}>
+                                                        📱
+                                                    </button>
+                                                    <button className='btn btn-edit btn-small' onClick={() => handleEdit(link)}>
+                                                        ✏️
+                                                    </button>
+                                                    <button className='btn btn-delete btn-small' onClick={() => handleDelete(link._id)}>
+                                                        🗑️
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))
@@ -196,13 +301,14 @@ function DashboardPage() {
                 }
             </div>
 
-            <button 
-                onClick={handleLogout} 
-                className='btn btn-logout'
-                style={{marginTop: '2rem'}}
-            >
-                logout
-            </button>
+            <div style={{textAlign: 'center', marginTop: '2rem'}}>
+                <button 
+                    onClick={() => navigate('/')} 
+                    className='btn btn-primary'
+                >
+                    ✨ Create New Short URL
+                </button>
+            </div>
         </div> 
     );
 }

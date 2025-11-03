@@ -1,6 +1,7 @@
 import validUrl from "valid-url";
 import URL from "../models/url.js";
 import { nanoid } from "nanoid";
+import QRCode from "qrcode";
 
 export const shortenUrl = async (req, res) => {
     const { longUrl } = req.body;
@@ -73,5 +74,39 @@ export const redirectToUrl = async (req, res) => {
     catch (error) {
         console.error('Server error on redirect.', error.message);
         res.status(500).json({success: false, error: 'Internal Server error'});
+    }
+}
+
+export const generateQRCode = async (req, res) => {
+    try {
+        const { shortUrl } = req.params;
+        
+        const url = await URL.findOne({ shortUrl: shortUrl });
+        
+        if (!url) {
+            return res.status(404).json({ success: false, error: 'URL not found.' });
+        }
+
+        // Generate QR code as data URL
+        const qrCodeDataURL = await QRCode.toDataURL(url.longUrl, {
+            errorCorrectionLevel: 'H',
+            type: 'image/png',
+            quality: 0.95,
+            margin: 1,
+            color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+            }
+        });
+
+        res.status(200).json({ 
+            success: true, 
+            qrCode: qrCodeDataURL,
+            shortUrl: url.shortUrl,
+            originalUrl: url.originalUrl
+        });
+    } catch (error) {
+        console.error('Error generating QR code:', error.message);
+        res.status(500).json({ success: false, error: 'Failed to generate QR code.' });
     }
 }

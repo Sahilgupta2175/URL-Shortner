@@ -1,9 +1,10 @@
 import express from "express";
-import { shortenUrl } from "../controllers/urlController.js";
-import authMiddleware from "../middleware/authMiddleware.js";
+import { shortenUrl, generateQRCode } from "../controllers/urlController.js";
+import optionalAuthMiddleware from "../middleware/optionalAuthMiddleware.js";
 
 const router = express.Router();
 
-router.post('/shorten', authMiddleware, shortenUrl);
+router.post('/shorten', optionalAuthMiddleware, shortenUrl);
+router.get('/qrcode/:shortUrl', generateQRCode);
 
 export default router;
