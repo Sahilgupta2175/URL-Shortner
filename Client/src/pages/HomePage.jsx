@@ -69,7 +69,6 @@ function HomePage() {
             const response = await createShortURL(longURL);
             // Store the shortened URL for display
             setShortUrl(response.data.shortUrl);
-            console.log('Successfully created short URL: ', response);
         } catch (error) {
             // Extract error message from API response or use default
             const errorMessage = error.error || 'An unexpected error occurred.';

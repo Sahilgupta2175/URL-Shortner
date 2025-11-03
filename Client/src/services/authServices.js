@@ -20,7 +20,6 @@ export const registerUser = async (userData) => {
     try {
         // Send POST request to register endpoint
         const response = await axios.post(API_URL + 'register', userData);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error('API error: User registration failed', error.message);
@@ -51,7 +50,6 @@ export const loginUser = async (credentials) => {
     try {
         // Send POST request to login endpoint
         const response = await axios.post(API_URL + 'login', credentials);
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error('API error: User login failed', error.message);

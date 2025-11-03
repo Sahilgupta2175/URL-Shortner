@@ -52,5 +52,5 @@ app.use('/s', redirectUrl);
 
 // Start the server and listen on specified port
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    (`Server is running on http://localhost:${PORT}`);
 });

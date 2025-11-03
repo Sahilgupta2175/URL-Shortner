@@ -14,11 +14,11 @@ const connectDB = async () => {
     try {
         // Connect to MongoDB using connection string from .env file
         await mongoose.connect(process.env.MONGO_ATLAS_URL).then(() => {
-            console.log("MongoDB connected Successfully.");
+            ("MongoDB connected Successfully.");
         });
     } catch (error) {
         // Log error message if connection fails
-        console.log(error.message);
+        (error.message);
         // Exit the application with failure code
         process.exit(1);
     }

@@ -30,7 +30,6 @@ export const getUserLinks = async (token) => {
     try {
         // Send GET request to fetch user's links
         const response = await axios.get(API_URL + '/my-links', config);
-        console.log(response.data);
         return response.data;   
     } catch (error) {
         console.error('API error: Failed to fetch user links.', error.message);
@@ -72,7 +71,6 @@ export const deleteLink = async (linkId, token) => {
     try {
         // Send DELETE request to remove the link
         const response = await axios.delete(`${API_URL}/${linkId}`, config);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error('API error: Failed to delete link.', error.message);
@@ -118,7 +116,6 @@ export const updateLink = async (linkId, updatedData, token) => {
     try {
         // Send PUT request to update the link
         const response = await axios.put(`${API_URL}/${linkId}`, updatedData, config);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error('API error: Failed to update link.', error.message);

@@ -19,7 +19,6 @@ const authMiddleware = async (req, res, next) => {
     // Try to get token from cookies first, then from Authorization header
     // Supports both cookie-based and header-based authentication
     const authHeader = req.cookies.authToken || req.header('Authorization');
-    console.log("Auth header:", authHeader);
 
     // If no token found, deny access
     if(!authHeader) {
@@ -29,7 +28,6 @@ const authMiddleware = async (req, res, next) => {
     // Extract token, removing "Bearer " prefix if it exists
     // Header format: "Bearer <token>" or just "<token>"
     const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : authHeader;
-    console.log('Token: ', token);
 
     // Double check token exists after extraction
     if(!token) {

@@ -82,7 +82,6 @@ function LoginPage() {
             if(response.token) {
                 // Store token in context and localStorage
                 login(response.token);
-                console.log('Token stored successfully!');
                 // Redirect to dashboard
                 navigate('/dashboard');
             }

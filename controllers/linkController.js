@@ -20,7 +20,6 @@ export const getMyLinks = async (req, res) => {
 
         // Find all URLs created by this user and sort by newest first
         const links = await URL.find({user: req.user.id}).sort({createdAt: -1});
-        console.log(links);
 
         // Return list of URLs with total count
         res.status(200).json({success: true, count: links.length, data: links});

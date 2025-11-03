@@ -79,7 +79,6 @@ function RegisterPage() {
         try {
             // Call API to register user
             const response = await registerUser(formData);
-            console.log('Registration successful. ', response);
             
             // Show success message
             setSuccess('Registration successful! Redirecting to login...');

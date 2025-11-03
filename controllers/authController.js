@@ -21,9 +21,6 @@ export const registerUser = async (req, res) => {
     try {
         // Extract name, email, and password from request body
         const {name, email, password} = req.body;
-        console.log(`User name is ${name}`);
-        console.log(`User email is ${email}`);
-        console.log(`User password is ${password}`);
 
         // Validate that all required fields are provided
         if(!name || !email || !password) {
@@ -77,8 +74,7 @@ export const loginUser = async (req, res) => {
     try {
         // Extract email and password from request body
         const {email, password} = req.body;
-        console.log(`User email is ${email}`);
-        console.log(`User password is ${password}`);
+
 
         // Validate that both email and password are provided
         if(!email || !password) {

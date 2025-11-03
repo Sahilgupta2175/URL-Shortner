@@ -23,7 +23,6 @@ export const shortenUrl = async (req, res) => {
     // Extract the long URL from request body
     const { longUrl } = req.body;
     const originalUrl = longUrl;
-    console.log("Received Original URL from user: ", originalUrl);
     
     // Validate that URL is provided
     if(!originalUrl) {
@@ -73,7 +72,7 @@ export const shortenUrl = async (req, res) => {
         res.status(201).json({success: true, data: url});
     } catch (error) {
         // Handle any database errors
-        console.log('Database error.', error.message);
+        ('Database error.', error.message);
         return res.status(500).json({success: false, error: 'Internal Server error.'});
     }
 }
@@ -92,7 +91,6 @@ export const redirectToUrl = async (req, res) => {
     // Extract short code from URL path
     // Example: If user visits /s/aBc123XyZ9, shortUrl will be "aBc123XyZ9"
     const { shortUrl } = req.params;
-    console.log('ShortURl from Url: ', shortUrl);
 
     try {
         // Find the URL document in database by short code
