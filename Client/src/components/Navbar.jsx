@@ -17,8 +17,8 @@ function Navbar() {
     return (
         <nav className='navbar'>
             <div className='navbar-content'>
-                <Link to='/' className='navbar-brand'>
-                    🔗 LinkShortly
+                <Link to='/' className='navbar-brand' title='Go to homepage'>
+                    LinkShortly
                 </Link>
                 <div className='navbar-links'>
                     {authToken ? (
@@ -26,15 +26,17 @@ function Navbar() {
                             <Link 
                                 to='/dashboard' 
                                 className={isActive('/dashboard') ? 'active' : ''}
+                                title='View your dashboard'
                             >
-                                📊 Dashboard
+                                Dashboard
                             </Link>
                             <button 
                                 onClick={handleLogout} 
                                 className='btn btn-small btn-secondary'
                                 style={{padding: '0.5rem 1rem'}}
+                                title='Logout from your account'
                             >
-                                🚪 Logout
+                                Logout
                             </button>
                         </>
                     ) : (
@@ -42,11 +44,13 @@ function Navbar() {
                             <Link 
                                 to='/login' 
                                 className={isActive('/login') ? 'active' : ''}
+                                title='Login to your account'
                             >
                                 Login
                             </Link>
                             <Link 
                                 to='/register'
+                                title='Create a new account'
                             >
                                 <button className='btn btn-primary btn-small'>
                                     Sign Up

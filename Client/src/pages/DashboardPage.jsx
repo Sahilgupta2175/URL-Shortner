@@ -126,7 +126,7 @@ function DashboardPage() {
 
     return (
         <div className='dashboard-container'>
-            <h2>📊 My Dashboard</h2>
+            <h2>My Dashboard</h2>
             <p>Welcome to your personal dashboard! Manage and track all your shortened URLs.</p>
 
             <div className='stats-container'>
@@ -185,10 +185,10 @@ function DashboardPage() {
                             />
                         )}
                         <div style={{marginTop: '1rem', display: 'flex', gap: '10px', justifyContent: 'center'}}>
-                            <button onClick={handleDownloadQR} className='btn btn-primary'>
-                                📥 Download
+                            <button onClick={handleDownloadQR} className='btn btn-primary' title='Download QR Code as PNG'>
+                                Download
                             </button>
-                            <button onClick={handleCloseQR} className='btn btn-secondary'>
+                            <button onClick={handleCloseQR} className='btn btn-secondary' title='Close QR Code modal'>
                                 Close
                             </button>
                         </div>
@@ -289,17 +289,31 @@ function DashboardPage() {
                                                             background: copiedId === link._id ? '#10b981' : '',
                                                             transition: 'all 0.3s ease'
                                                         }}
+                                                        title={copiedId === link._id ? 'Copied!' : 'Copy URL'}
                                                     >
-                                                        {copiedId === link._id ? '✓' : '📋'}
+                                                        {copiedId === link._id ? 'Copied' : 'Copy'}
                                                     </button>
-                                                    <button className='btn btn-primary btn-small' onClick={() => handleGenerateQR(link)} style={{background: '#8b5cf6'}}>
-                                                        📱
+                                                    <button 
+                                                        className='btn btn-primary btn-small' 
+                                                        onClick={() => handleGenerateQR(link)} 
+                                                        style={{background: '#8b5cf6'}}
+                                                        title='Generate QR Code'
+                                                    >
+                                                        QR
                                                     </button>
-                                                    <button className='btn btn-edit btn-small' onClick={() => handleEdit(link)}>
-                                                        ✏️
+                                                    <button 
+                                                        className='btn btn-edit btn-small' 
+                                                        onClick={() => handleEdit(link)}
+                                                        title='Edit URL'
+                                                    >
+                                                        Edit
                                                     </button>
-                                                    <button className='btn btn-delete btn-small' onClick={() => handleDelete(link._id)}>
-                                                        🗑️
+                                                    <button 
+                                                        className='btn btn-delete btn-small' 
+                                                        onClick={() => handleDelete(link._id)}
+                                                        title='Delete URL'
+                                                    >
+                                                        Delete
                                                     </button>
                                                 </div>
                                             </td>
@@ -318,8 +332,9 @@ function DashboardPage() {
                 <button 
                     onClick={() => navigate('/')} 
                     className='btn btn-primary'
+                    title='Create a new short URL'
                 >
-                    ✨ Create New Short URL
+                    Create New Short URL
                 </button>
             </div>
         </div> 

@@ -29,8 +29,8 @@ export const shortenUrl = async (req, res) => {
         //* generating short url 
         const generatedShortURL = nanoid(10);
 
-        //* adding short url with base url. eg. http://localhost:8080/alohslieow
-        const longUrl = `${process.env.BASE_URL}/${generatedShortURL}`;
+        //* adding short url with base url. eg. http://localhost:8080/s/alohslieow
+        const longUrl = `${process.env.BASE_URL}/s/${generatedShortURL}`;
 
         //* creating object to hold new URL document
         const newURLData = {

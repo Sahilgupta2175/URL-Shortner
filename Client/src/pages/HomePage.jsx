@@ -63,7 +63,7 @@ function HomePage() {
         <div className='page-container'>
             <div className='page-content'>
                 <div className='home-container'>
-                    <h2>⚡ URL Shortener</h2>
+                    <h2>URL Shortener</h2>
                     <p>Transform long URLs into short, shareable links instantly!</p>
 
                     <form onSubmit={handleSubmit}>
@@ -85,30 +85,31 @@ function HomePage() {
                                     fontSize: '0.875rem',
                                     color: '#f59e0b'
                                 }}>
-                                    📏 Your URL is {longURL.length} characters long
+                                    URL Length: {longURL.length} characters
                                 </p>
                             )}
                         </div>
-                        <button type='submit' disabled={isLoading}>
-                            {isLoading ? '🔄 Shortening...' : '✨ Shorten URL'}
+                        <button type='submit' disabled={isLoading} title={isLoading ? 'Processing...' : 'Click to shorten your URL'}>
+                            {isLoading ? 'Shortening...' : 'Shorten URL'}
                         </button>
                     </form>
 
                     {shortUrl && (
                         <div className='result-container'>
                             <p style={{color: '#10b981', fontWeight: '600', marginBottom: '0.5rem'}}>
-                                ✅ Your shortened URL is ready!
+                                Success! Your shortened URL is ready
                             </p>
                             <div className='short-url-display'>
-                                <a href={shortUrl} target='_blank' rel='noopener noreferrer'>
+                                <a href={shortUrl} target='_blank' rel='noopener noreferrer' title='Click to visit your shortened URL'>
                                     {shortUrl}
                                 </a>
                                 <button 
                                     className='btn btn-copy' 
                                     type='button' 
                                     onClick={handleCopy}
+                                    title={isCopied ? 'Copied to clipboard!' : 'Copy URL to clipboard'}
                                 >
-                                    {isCopied ? '✓ Copied!' : '📋 Copy'}
+                                    {isCopied ? 'Copied!' : 'Copy'}
                                 </button>
                             </div>
                             <button 
@@ -116,13 +117,14 @@ function HomePage() {
                                 type='button' 
                                 onClick={handleReset}
                                 style={{marginTop: '1rem', width: '100%'}}
+                                title='Create another short URL'
                             >
                                 Create Another
                             </button>
                             {authToken && (
                                 <p style={{marginTop: '1rem', color: '#64748b'}}>
-                                    💡 View all your links in{' '}
-                                    <a href='/dashboard' onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }}>
+                                    View all your links in{' '}
+                                    <a href='/dashboard' onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }} title='Go to Dashboard'>
                                         Dashboard
                                     </a>
                                 </p>
@@ -132,7 +134,7 @@ function HomePage() {
 
                     {error && (
                         <div className='error-message'>
-                            <p><strong>❌ Error:</strong> {error}</p>
+                            <p><strong>Error:</strong> {error}</p>
                         </div>
                     )}
 
@@ -145,11 +147,12 @@ function HomePage() {
                             textAlign: 'center'
                         }}>
                             <p style={{marginBottom: '1rem', color: '#64748b'}}>
-                                📊 Want to track your links and view analytics?
+                                Want to track your links and view analytics?
                             </p>
                             <button 
                                 className='btn btn-primary'
                                 onClick={() => navigate('/login')}
+                                title='Sign in to track your shortened URLs'
                             >
                                 Sign In / Sign Up
                             </button>

@@ -55,7 +55,7 @@ function RegisterPage() {
     return (
         <div className='page-container'>
             <div className='auth-container card'>
-                <h2>✨ Create Your Account</h2>
+                <h2>Create Your Account</h2>
                 <p>Join us to start creating and managing your own short links!</p>
 
                 <form onSubmit={handleSubmit}>
@@ -98,8 +98,8 @@ function RegisterPage() {
                     />
                 </div>
 
-                <button type='submit' className='btn btn-primary' disabled={isLoading}>
-                    {isLoading ? '🔄 Creating Account...' : '🚀 Register'}
+                <button type='submit' className='btn btn-primary' disabled={isLoading} title={isLoading ? 'Creating your account...' : 'Create your account'}>
+                    {isLoading ? 'Creating Account...' : 'Register'}
                 </button>
             </form>
 

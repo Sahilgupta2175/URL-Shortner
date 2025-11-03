@@ -54,7 +54,7 @@ function LoginPage() {
     return (
         <div className='page-container'>
             <div className='auth-container card'>
-                <h2>🔐 Welcome Back!</h2>
+                <h2>Welcome Back!</h2>
                 <p>Log in to access your dashboard and manage your URLs.</p>
 
                 <form onSubmit={handleSubmit}>
@@ -84,8 +84,8 @@ function LoginPage() {
                     />
                 </div>
 
-                <button type='submit' className='btn btn-primary' disabled={isLoading}>
-                    {isLoading ? '🔄 Logging in...' : '🚀 Login'}
+                <button type='submit' className='btn btn-primary' disabled={isLoading} title={isLoading ? 'Logging in...' : 'Login to your account'}>
+                    {isLoading ? 'Logging in...' : 'Login'}
                 </button>
             </form>
 

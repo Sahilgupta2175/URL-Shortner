@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use('/api', urlRoutes);
 app.use('/api/auth', authRoute);
 app.use('/api/links', linksRoute);
-app.use('/', redirectUrl);
+app.use('/s', redirectUrl); // Use /s prefix for short URLs to avoid conflicts
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
