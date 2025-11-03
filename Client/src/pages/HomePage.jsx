@@ -52,30 +52,24 @@ function HomePage() {
                 <button type='Submit'>Shorten URL</button>
             </form>
             {
-                error && (
-                    <div className='error-container' style={{color: 'red', marginTop: '1rem'}}>
-                        <p><strong>Error: </strong> {error}</p>
+                shortUrlData && (
+                    <div className='result-container' style={{marginTop: '20px'}}>
+                        <p>Your Shortened URL: </p>
+                        <div className='short-url-display' style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                            <a href={shortUrlData.shortUrl} target='_blank' rel='noopener noreferrer'>
+                                {shortUrlData.shortUrl}
+                            </a>
+                            <button className='btn btn-copy' type='button'>
+                                Copy
+                            </button>
+                        </div>
                     </div>
                 )
             }
             {
-                shortUrlData && (
-                    <div className='result-container' style={{marginTop: '1rem', border: '1px solid #ccc', padding: '1rem', borderRadius: '5px'}}>
-                        <h3>Your Short URL is ready!</h3>
-                        <p>
-                            <strong>Short Link: </strong>
-                            <a 
-                                href={shortUrlData.shortUrl}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                style={{marginLeft: '0.5rem', fontWeight: 'bold', color: '#007bff'}}
-                            >
-                                {shortUrlData.shortUrl}
-                            </a>
-                        </p>
-                        <p style={{fontsize: '0.8rem', color: '#555'}}>
-                            <strong>Original URL: </strong>{shortUrlData.originalUrl.substring(0,70)}...
-                        </p>
+                error && (
+                    <div className='error-message' style={{color: 'red'}}>
+                        <p><strong>Error: </strong> {error}</p>
                     </div>
                 )
             }
